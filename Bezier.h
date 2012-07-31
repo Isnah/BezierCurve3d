@@ -5,13 +5,13 @@
 using namespace std;
 
 struct Point3d {
-	int x, y, z;
-}
+	float x, y, z;
+};
 
 class HelperMethods {
 public:
 	static Point3d* findPoint(const Point3d p1, const Point3d p2, float part);
-}
+};
 
 class BezierCurve {
 private:
@@ -20,7 +20,7 @@ private:
 
 public:
 	BezierCurve();
-	BezierCurve(vector<Point3d*>* pointsList);
+	BezierCurve(vector<Point3d*> pointsList);
 
 	~BezierCurve();
 
@@ -31,4 +31,4 @@ public:
 
 	void calculateBezier(int points);
 	vector<Point3d*> recBezierHelper(vector<Point3d*> points, float part);
-}
+};
