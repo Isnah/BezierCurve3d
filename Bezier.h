@@ -30,5 +30,5 @@ public:
 	Point3d* getBezierPoint(int pointNo);
 
 	void calculateBezier(int points);
-	vector<Point3d*> recBezierHelper(vector<Point3d*> points, float part);
+	Point3d* recBezierHelper(vector<Point3d*> points, float part);
 };

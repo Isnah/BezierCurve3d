@@ -39,26 +39,25 @@ Point3d* BezierCurve::getBezierPoint(int pointNo) {
 
 void BezierCurve::calculateBezier(int points) {
 	cout << "Creating curve";
-	for(int i = 0; i < points; ++i) {											// for i = 0...<amount of points>
-		bezierPoints.push_back(recBezierHelper(basePoints, ((float)i)/points)[0]);		//    run the recursiveBezierHelper method with the basePoint list to find point i along the bezier curve
+	for(int i = 0; i < points; ++i) {												// for i = 0...<amount of points>
+		bezierPoints.push_back(recBezierHelper(basePoints, ((float)i)/points));		//    run the recursiveBezierHelper method with the basePoint list to find point i along the bezier curve
 		cout << ".";
 	}
 
 	cout << endl;
 }
 
-vector<Point3d*> BezierCurve::recBezierHelper(vector<Point3d*> points, float part) {
-	vector<Point3d*> points2;															// sets up a return array
+Point3d* BezierCurve::recBezierHelper(vector<Point3d*> points, float part) {
 	if(points.size() == 2) {															// Checks if the size of the input array was 2, since two points are a single line
-		points2.push_back(HelperMethods::findPoint(*points[0], *points[1], part));		//    uses the findpoint helper method to find the correct point on the line, and does a push_back into the output array
-		return points2;																	//    returns the output array
+		return HelperMethods::findPoint(*points[0], *points[1], part);					//    uses the findpoint helper method to find the correct point on the line and returns it
 	}
 
+	vector<Point3d*> points2;															// sets up a new input array
 	for(int i = 0; i < (points.size() - 1); ++i) {										// for every point in the input array, except the last
-		points2.push_back(HelperMethods::findPoint(*points[i], *points[i+1], part));    //    use the findpoint method to find a new point along the line between that point and the next, and push it back in the output array
+		points2.push_back(HelperMethods::findPoint(*points[i], *points[i+1], part));    //    use the findpoint method to find a new point along the line between that point and the next, and push it back in the new input array array
 	}																					
-																						// the previous should give us an output array with one less point than the input array, with points along the lines between each point along the array
-	return recBezierHelper(points2, part);												// recursively return using the output array as input
+																						// the previous should give us an array with one less point than the original input array, the points being placed along the lines between the original points
+	return recBezierHelper(points2, part);												// recursively return using the new input array
 }
 
 Point3d* HelperMethods::findPoint(const Point3d p1, const Point3d p2, float part) {
@@ -66,7 +65,7 @@ Point3d* HelperMethods::findPoint(const Point3d p1, const Point3d p2, float part
 	point->x = p2.x - p1.x;   // This
 	point->y = p2.y - p1.y;   // is
 	point->z = p2.z - p1.z;   // all
-	                         // basic
+	                          // basic
 	point->x *= part;         // vector
 	point->y *= part;         // maths
 	point->z *= part;
