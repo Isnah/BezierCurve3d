@@ -120,4 +120,5 @@ int main() {
 		Point3d* point = curve.getBezierPoint(bezierPointAmount*i/displayAmount);
 		cout << point->x << "\t" << point->y << "\t" << point->z << endl;
 	}
+	return 0;
 }
