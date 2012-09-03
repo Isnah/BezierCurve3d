@@ -1,8 +1,9 @@
+#ifndef _ISNAH_BEZIER_H_
+#define _ISNAH_BEZIER_H_
+
 #include <vector>
 #include <fstream>
 #include <iostream>
-
-using namespace std;
 
 struct Point3d {
 	float x, y, z;
@@ -14,21 +15,23 @@ public:
 };
 
 class BezierCurve {
-private:
-	vector<Point3d*> bezierPoints;
-	vector<Point3d*> basePoints;
-
 public:
 	BezierCurve();
-	BezierCurve(vector<Point3d*> pointsList);
+	explicit BezierCurve(std::vector<Point3d*> pointsList);
 
 	~BezierCurve();
 
-	void setBasePoints(vector<Point3d*> pointsList);
-	vector<Point3d*> getBasePoints();
-	vector<Point3d*> getBezierPoints();
-	Point3d* getBezierPoint(int pointNo);
+	void setBasePoints(std::vector<Point3d*> pointsList);
+	std::vector<Point3d*> getBasePoints() const;
+	std::vector<Point3d*> getBezierPoints() const;
+	Point3d* getBezierPoint(unsigned int pointNo) const;
 
 	void calculateBezier(int points);
-	Point3d* recBezierHelper(vector<Point3d*> points, float part);
+	Point3d* recBezierHelper(std::vector<Point3d*> points, float part);
+
+private:
+	std::vector<Point3d*> bezierPoints;
+	std::vector<Point3d*> basePoints;
 };
+
+#endif

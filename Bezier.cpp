@@ -1,73 +1,83 @@
 #include "Bezier.h"
 
-BezierCurve::BezierCurve() {
+BezierCurve::BezierCurve() 
+{
 }
 
-BezierCurve::BezierCurve(vector<Point3d*> pointsList) {
-	basePoints = pointsList;
+BezierCurve::BezierCurve(std::vector<Point3d*> pointsList) 
+	: basePoints(pointsList)
+{
 }
 
-BezierCurve::~BezierCurve() {
+BezierCurve::~BezierCurve() 
+{
 }
 
-void BezierCurve::setBasePoints(vector<Point3d*> pointsList) {
+void BezierCurve::setBasePoints(std::vector<Point3d*> pointsList) 
+{
 	if(!basePoints.empty())	basePoints.clear();
 	basePoints = pointsList;
 }
 
-vector<Point3d*> BezierCurve::getBasePoints() {
+std::vector<Point3d*> BezierCurve::getBasePoints() const 
+{
 	return basePoints;
 }
 
-vector<Point3d*> BezierCurve::getBezierPoints() {
+std::vector<Point3d*> BezierCurve::getBezierPoints() const 
+{
 	return bezierPoints;
 }
 
-Point3d* BezierCurve::getBezierPoint(int pointNo) {
+Point3d* BezierCurve::getBezierPoint(unsigned int pointNo) const 
+{
 	if(bezierPoints.size() > pointNo && pointNo >= 0) {
 		return bezierPoints[pointNo];
 	}
 
-	cerr << "Error retrieving point from list. Asked for index " << pointNo << ", size of array: " << bezierPoints.size() << ". Returned faux point." << endl;
-	Point3d point;
-	point.x = 0;
-	point.y = 0;
-	point.z = 0;
-
-	return &point;
-}
-
-void BezierCurve::calculateBezier(int points) {
-	cout << "Creating curve";
-	for(int i = 0; i < points; ++i) {												// for i = 0...<amount of points>
-		bezierPoints.push_back(recBezierHelper(basePoints, ((float)i)/points));		//    run the recursiveBezierHelper method with the basePoint list to find point i along the bezier curve
-		cout << ".";
-	}
-
-	cout << endl;
-}
-
-Point3d* BezierCurve::recBezierHelper(vector<Point3d*> points, float part) {
-	if(points.size() == 2) {															// Checks if the size of the input array was 2, since two points are a single line
-		return HelperMethods::findPoint(*points[0], *points[1], part);					//    uses the findpoint helper method to find the correct point on the line and returns it
-	}
-
-	vector<Point3d*> points2;															// sets up a new input array
-	for(int i = 0; i < (points.size() - 1); ++i) {										// for every point in the input array, except the last
-		points2.push_back(HelperMethods::findPoint(*points[i], *points[i+1], part));    //    use the findpoint method to find a new point along the line between that point and the next, and push it back in the new input array array
-	}																					
-																						// the previous should give us an array with one less point than the original input array, the points being placed along the lines between the original points
-	return recBezierHelper(points2, part);												// recursively return using the new input array
-}
-
-Point3d* HelperMethods::findPoint(const Point3d p1, const Point3d p2, float part) {
+	std::cerr << "Error retrieving point from list. Asked for index " << pointNo << ", size of array: " << bezierPoints.size() << ". Returned faux point." << std::endl;
 	Point3d* point = new Point3d;
-	point->x = p2.x - p1.x;   // This
-	point->y = p2.y - p1.y;   // is
-	point->z = p2.z - p1.z;   // all
-	                          // basic
-	point->x *= part;         // vector
-	point->y *= part;         // maths
+	point->x = 0;
+	point->y = 0;
+	point->z = 0;
+
+	return point;
+}
+
+void BezierCurve::calculateBezier(int points) 
+{
+	std::cout << "Creating curve";
+	for(int i = 0; i < points; ++i) {
+		bezierPoints.push_back(recBezierHelper(basePoints, ((float)i)/points));
+		std::cout << ".";
+	}
+
+	std::cout << std::endl;
+}
+
+Point3d* BezierCurve::recBezierHelper(std::vector<Point3d*> points, float part) 
+{
+	if(points.size() == 2) {															
+		return HelperMethods::findPoint(*points[0], *points[1], part);				
+	}
+
+	std::vector<Point3d*> points2;														
+	for(size_t i = 0; i < (points.size() - 1); ++i) {										
+		points2.push_back(HelperMethods::findPoint(*points[i], *points[i+1], part));   
+	}																					
+																						
+	return recBezierHelper(points2, part);											
+}
+
+Point3d* HelperMethods::findPoint(const Point3d p1, const Point3d p2, float part) 
+{
+	Point3d* point = new Point3d;
+	point->x = p2.x - p1.x;  
+	point->y = p2.y - p1.y;   
+	point->z = p2.z - p1.z;   
+	                          
+	point->x *= part;         
+	point->y *= part;         
 	point->z *= part;
 
 	point->x += p1.x;
@@ -77,22 +87,23 @@ Point3d* HelperMethods::findPoint(const Point3d p1, const Point3d p2, float part
 	return point;
 }
 
-int main() {
-	cout << "How many basePoints do you want? ";
+int main() 
+{
+	std::cout << "How many basePoints do you want? ";
 	int basePointAmount;
-	cin >> basePointAmount;
-	cout << endl;
+	std::cin >> basePointAmount;
+	std::cout << std::endl;
 
-	vector<Point3d*> basePoints;
+	std::vector<Point3d*> basePoints;
 
 	for(int i = 0; i < basePointAmount; ++i) {
 		float x, y, z;
-		cout << "X: ";
-		cin >> x;
-		cout << "Y: ";
-		cin >> y;
-		cout << "Z: ";
-		cin >> z;
+		std::cout << "X: ";
+		std::cin >> x;
+		std::cout << "Y: ";
+		std::cin >> y;
+		std::cout << "Z: ";
+		std::cin >> z;
 
 		Point3d *point = new Point3d;
 		point->x = x;
@@ -105,20 +116,20 @@ int main() {
 	BezierCurve curve(basePoints);
 	int bezierPointAmount;
 
-	cout << "How many bezierPoints do you want? ";
-	cin >> bezierPointAmount;
-	cout << endl;
+	std::cout << "How many bezierPoints do you want? ";
+	std::cin >> bezierPointAmount;
+	std::cout << std::endl;
 
 	curve.calculateBezier(bezierPointAmount);
 
 	int displayAmount;
-	cout << "How many points do you want to display? ";
-	cin >> displayAmount;
+	std::cout << "How many points do you want to display? ";
+	std::cin >> displayAmount;
 
-	cout << "x\ty\tz" << endl;
+	std::cout << "x\ty\tz" << std::endl;
 	for(int i = 0; i < displayAmount; ++i) {
 		Point3d* point = curve.getBezierPoint(bezierPointAmount*i/displayAmount);
-		cout << point->x << "\t" << point->y << "\t" << point->z << endl;
+		std::cout << point->x << "\t" << point->y << "\t" << point->z << std::endl;
 	}
 	return 0;
 }
