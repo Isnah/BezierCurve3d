@@ -27,11 +27,11 @@ public:
 	Point3d* getBezierPoint(unsigned int pointNo) const;
 
 	void calculateBezier(int points);
-	Point3d* recBezierHelper(std::vector<Point3d*> points, float part);
 
 private:
 	std::vector<Point3d*> bezierPoints;
 	std::vector<Point3d*> basePoints;
+	Point3d* recBezierHelper(std::vector<Point3d*> points, float part);
 };
 
 #endif
