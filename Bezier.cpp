@@ -11,6 +11,13 @@ BezierCurve::BezierCurve(std::vector<Point3d*> pointsList)
 
 BezierCurve::~BezierCurve() 
 {
+  for(unsigned int i = 0; i < basePoints.size(); ++i) {
+    delete basePoints[i];
+  }
+
+  for(unsigned int i = 0; i < bezierPoints.size(); ++i) {
+    delete bezierPoints[i];
+  }
 }
 
 void BezierCurve::setBasePoints(std::vector<Point3d*> pointsList) 
@@ -68,8 +75,8 @@ Point3d* BezierCurve::recBezierHelper(std::vector<Point3d*> points, float part)
 	for(size_t i = 0; i < (points.size() - 1); ++i) {										
 		points2.push_back(HelperMethods::findPoint(*points[i], *points[i+1], part));   
 	}
-																						
-	return recBezierHelper(points2, part);											
+	return recBezierHelper(points2, part);
+
 }
 
 Point3d* HelperMethods::findPoint(const Point3d p1, const Point3d p2, float part) 
