@@ -46,8 +46,11 @@ Point3d* BezierCurve::getBezierPoint(unsigned int pointNo) const
 
 void BezierCurve::calculateBezier(int points) 
 {
+	points--;
+
 	std::cout << "Creating curve";
-	for(int i = 0; i < points; ++i) {
+
+	for(int i = 0; i <= points; ++i) {
 		bezierPoints.push_back(recBezierHelper(basePoints, ((float)i)/points));
 		std::cout << ".";
 	}
@@ -64,7 +67,7 @@ Point3d* BezierCurve::recBezierHelper(std::vector<Point3d*> points, float part)
 	std::vector<Point3d*> points2;														
 	for(size_t i = 0; i < (points.size() - 1); ++i) {										
 		points2.push_back(HelperMethods::findPoint(*points[i], *points[i+1], part));   
-	}																					
+	}
 																						
 	return recBezierHelper(points2, part);											
 }
